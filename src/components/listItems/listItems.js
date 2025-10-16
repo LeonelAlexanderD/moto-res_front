@@ -25,7 +25,7 @@ export const firstListItems = ({ rolName }) => (
     <React.Fragment>
       <StyledListSubheader component="div">
         <PeopleIcon style={iconStyles} />        
-        <ListItemLink to="usuarios" text="Usuario"/>
+        <ListItemLink to="productos" text="Productos"/>
       </StyledListSubheader>
     </React.Fragment>
 );

@@ -8,8 +8,10 @@ import Dashboard from "./components/Dashboard/Dashboard";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.min.css";
 
-import UsuariosPage from "./views/Usuarios/UsuariosPage/UsuariosPage";
-import { UsuarioProvider } from "views/Usuarios/Common/UsuarioProvider";
+import ProductoPage from "./views/Productos/ProductoPage/ProductosPage";
+import { ProductoProvider } from "./views/Productos/Common/ProductoProvider";
+
+
 export default function App() {
   const isAuthenticated = localStorage.getItem("token");
   // const dispatch = useDispatch();
@@ -33,11 +35,11 @@ export default function App() {
           {/* {isAuthenticated = true ( */}
           <Route path="*" element={<Dashboard logout={isAuthenticated} />}>
             <Route
-              path="usuarios"
+              path="productos"
               element={
-                <UsuarioProvider>
-                  <UsuariosPage />
-                </UsuarioProvider>
+                <ProductoProvider>
+                  <ProductoPage />
+                </ProductoProvider>
               }
             />
 

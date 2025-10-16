@@ -130,8 +130,8 @@ function DashboardContent({ rolName }) {
                 marginRight: "40px",
               }}
             >
-              SIGUP <br />
-              SISTEMA DE GESTION DE USUARIOS Y PERMISOS
+              MOTO-RES <br />
+              Gestion y Punto de Venta
             </Typography>
             <Button sx={{ ml: 1 }} color="inherit" onClick={handleLogout}>
               Salir
