@@ -9,6 +9,7 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 import ProductoPage from "./views/Productos/ProductoPage/ProductosPage";
+import MainPage from "views/Principal/MainPage/MainPage";
 import { ProductoProvider } from "./views/Productos/Common/ProductoProvider";
 
 
@@ -34,6 +35,16 @@ export default function App() {
         <Routes>
           {/* {isAuthenticated = true ( */}
           <Route path="*" element={<Dashboard logout={isAuthenticated} />}>
+            
+
+            <Route
+              path="dashboard"
+              element={
+                <ProductoProvider>
+                  <MainPage />
+                </ProductoProvider>
+              }
+            />
             <Route
               path="productos"
               element={
@@ -42,15 +53,6 @@ export default function App() {
                 </ProductoProvider>
               }
             />
-
-            {/* <Route
-              path="aplicativos"
-              element={
-                <UsuarioProvider>
-                  <AplicativosPage />
-                </UsuarioProvider>
-              }
-            /> */}
             {/* <Route
               path="roles"
               element={

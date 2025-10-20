@@ -21,8 +21,9 @@ import {
 import DirectionsRunIcon from "@mui/icons-material/DirectionsRun";
 import { Button, Grid } from "@mui/material";
 import { Outlet } from "react-router-dom";
-import logo from "./Logo2.png";
-import logoCataGob from "./Ctca-Gobierno.png";
+import logo from "./helicoptero (1).png";
+import { mdTheme } from 'theme';
+
 
 const drawerWidth = 240;
 
@@ -72,16 +73,16 @@ const Drawer = styled(MuiDrawer, {
   },
 }));
 
-const mdTheme = createTheme({
-  palette: {
-    primary: {
-      main: "#0645ccff",
-    },
-    secondary: {
-      main: "#311b92",
-    },
-  },
-});
+// const mdTheme = createTheme({
+//   palette: {
+//     primary: {
+//       main: "#0645ccff",
+//     },
+//     secondary: {
+//       main: "#311b92",
+//     },
+//   },
+// });
 
 function DashboardContent({ rolName }) {
   const [open, setOpen] = React.useState(true);

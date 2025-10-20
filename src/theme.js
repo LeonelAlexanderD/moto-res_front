@@ -4,10 +4,10 @@ export const mdTheme = createTheme(
     {
         palette: {
           primary: {
-            main: '#0645ccff',
+            main: '#EC3E13',
           },
           secondary: {
-            main: '#311b92',
+            main: '#F9FAFB',
           },
         },
       },
