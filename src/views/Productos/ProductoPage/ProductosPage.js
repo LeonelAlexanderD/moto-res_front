@@ -13,8 +13,8 @@ import {} from '../ProductoEliminar/ProductoEliminar';
 import {} from '../ProductoEditar/ProductoEditar';
 
 import {
-  filterUsuarios, // funcion en slice
-  selectUsuariosFilter, //state de la funcion filterUsuario
+  getProductosSearch, // funcion en slice
+  selectProductosSearch, //state de la funcion filterUsuario
   selectIsLoading,
   selectMessageResponse, // estate en slice
   selectError,// state en slice
@@ -31,7 +31,7 @@ const ProductosPage = () => {
   const [view, setView] = useState(false);
   const [currentSearch, setCurrentSearch] = React.useState(null);
   const dispatch = useDispatch();
-  const GetUsuarios = useSelector(selectUsuariosFilter);
+  const GetUsuarios = useSelector(selectProductosSearch);
   const GetResponse = useSelector(selectMessageResponse);
   const numberPages = useSelector(selectNumberPages);
   const sError = useSelector(selectError);
@@ -39,7 +39,7 @@ const ProductosPage = () => {
   // const [usuario, setUsuario] = useContext(UsuarioContext);
 
   useEffect(() => {
-    dispatch(filterUsuarios({ page: page ? page : 1, data: currentSearch }));
+    dispatch(getProductosSearch({ page: page ? page : 1, data: currentSearch }));
   }, [page, dispatch]);
 
   useEffect(() => {
@@ -55,7 +55,7 @@ const ProductosPage = () => {
 
   const handleSearch = (e) => {
     if (e.code !== "Enter") return;
-    dispatch(filterUsuarios({ page: 1, data: e.target.value }));
+    dispatch(getProductosSearch({ page: 1, data: e.target.value }));
     setCurrentSearch(e.target.value);
   };
 

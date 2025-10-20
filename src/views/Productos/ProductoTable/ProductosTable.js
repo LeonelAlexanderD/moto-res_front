@@ -17,7 +17,7 @@ import ProductoEliminar from "../ProductoEliminar/ProductoEliminar";
 import ProductoEditar from "../ProductoEditar/ProductoEditar";
 import ProductoInfo from "../ProductoDetalle/ProductoInfo";
 
-const renderCantCap = (itemAct) => (
+const renderCantCap = (data) => (
   <div style={{ display: "flex", alignItems: "center" }}>    
   </div>
 );
@@ -71,22 +71,22 @@ const ProductosTable = ({ datosAct }) => {
         </TableHead>
         <TableBody>
           {(datosAct && datosAct)?.map(
-            (itemAct) => (
-              <TableRow key={itemAct.idUsuario}>
-                {renderTableCell(itemAct.idUsuario)}
-                {renderTableCell(itemAct.Nombre, "200px")}
-                {renderTableCell(itemAct.dni)}
-                {renderTableCell(itemAct.email)}
-                {renderTableCell(itemAct.idReparticion)}
-                {renderDoubleTableCell(itemAct.idRol, itemAct.idPermiso)}
-                {renderTableCell(itemAct.Activo)}
-                {renderCupoCell(itemAct.fechaCreacion)}
-                {renderTableCell(itemAct.fechaModificacion)}
+            (data) => (
+              <TableRow key={data.idUsuario}>
+                {renderTableCell(data.idUsuario)}
+                {renderTableCell(data.Nombre, "200px")}
+                {renderTableCell(data.dni)}
+                {renderTableCell(data.email)}
+                {renderTableCell(data.idReparticion)}
+                {renderDoubleTableCell(data.idRol, data.idPermiso)}
+                {renderTableCell(data.Activo)}
+                {renderCupoCell(data.fechaCreacion)}
+                {renderTableCell(data.fechaModificacion)}
                 {renderTableCell(
                                   <>
-                                    <ProductoEditar item={itemAct} />
-                                    <ProductoEliminar itemAct={itemAct} />
-                                    <ProductoInfo itemView={itemAct} />
+                                    <ProductoEditar item={data} />
+                                    <ProductoEliminar data={data} />
+                                    <ProductoInfo itemView={data} />
                                   </>,
                                   "120px",
                                   "center"
