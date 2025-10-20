@@ -6,7 +6,7 @@ import Dashboard from "./components/Dashboard/Dashboard";
 // import { SnackBarMessageResponse } from "utils/Response/SnackBarMessageResponse";
 // import SnackBarUtils from "utils/MUI/SnackbarUtils";
 import { ToastContainer } from "react-toastify";
-import "react-toastify/dist/ReactToastify.min.css";
+import "react-toastify/dist/ReactToastify.css";
 
 import ProductoPage from "./views/Productos/ProductoPage/ProductosPage";
 import { ProductoProvider } from "./views/Productos/Common/ProductoProvider";

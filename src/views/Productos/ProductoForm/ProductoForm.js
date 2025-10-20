@@ -21,41 +21,12 @@ import {
   clearUsuariosSearchData,
 } from "store/usuarios/usuarios.slice";
 import { useFormControl } from '@mui/material/FormControl';
-import { searchPerson, filterPersonas } from "store/persona/persona.slice";
-
-import {
-  getAplicativosEndPoint,
-  selectAplicativos,
-  asignarUsuarioAplicativo,
-} from "store/aplicativos/aplicativos.slice";
-import {
-  selectReparticionFilter,
-  getReparticionEndPoint,
-} from "store/reparticiones/reparticiones.slice";
-
-import {
-  getCargosEndPoint,
-  selectCargosFilter,
-} from "store/cargos/cargos.slice";
 import { vsUsuario } from "../Common/YupUsuarios";
 
 const ProductoForm = ({ data, onSubmit, onClose }) => {
   const dispatch = useDispatch();
   const isEditMode = Boolean(data);
-  const reparticiones = useSelector(selectReparticionFilter);
-  useEffect(() => {
-    dispatch(getReparticionEndPoint({ data: {} }));
-  }, [dispatch]);
-
-  const cargos = useSelector(selectCargosFilter);
-  useEffect(() => {
-    dispatch(getCargosEndPoint({ data: {} }));
-  }, [dispatch]);
-
-  const aplicativos = useSelector(selectAplicativos);
-  useEffect(() => {
-    dispatch(getAplicativosEndPoint({ data: {} }));
-  }, [dispatch]);
+  
 
   const handleClose = (event, reason) => {
     onClose();
@@ -63,15 +34,11 @@ const ProductoForm = ({ data, onSubmit, onClose }) => {
 
   const formik = useFormik({
     initialValues: {
-      idUsuario: data?.idUsuario || undefined,
       documento: data?.documento || "",
       Nombre: data?.Nombre || "",
       Usuario: data?.Usuario || "",
-      password: data?.password || "",
-      email: data?.email || "",
-      reparticion: data?.reparticion || "",
-      cargo: data?.cargo || "",
-      idAplicativo: data?.aplicativo || "",
+      password: data?.password || ""
+
     },
 
     enableReinitialize: true,
@@ -82,32 +49,6 @@ const ProductoForm = ({ data, onSubmit, onClose }) => {
   const handleBuscarDocumento = async () => {
     const { documento } = formik.values;
 
-    try {
-      // buscar persona por documento
-      const personaResult = await dispatch(searchPerson(documento)).unwrap();
-
-      if (!personaResult) {
-        toast.info("No se encontró ninguna persona con ese documento");
-        return;
-      }
-
-      // verificar si la persona tiene usuario asociado
-      const usuarioResult = await dispatch(
-        getUsuarioById(personaResult.idPersona)
-      ).unwrap();
-
-      if (usuarioResult) {
-        toast.error("Esta persona ya tiene un usuario asignado");
-        return;
-      }
-
-      // si no tiene usuario, completar el campo Nombre
-      formik.setFieldValue("Nombre", personaResult.Nombre);
-      toast.success("Persona encontrada. Campo nombre completado.");
-    } catch (error) {
-      console.error(error);
-      toast.error("Error al buscar la persona");
-    }
   };
 
   const handleBuscarUsuario = () => {
@@ -208,94 +149,9 @@ const ProductoForm = ({ data, onSubmit, onClose }) => {
           />
         </Grid>
 
-        {/* Repartición */}
-        <Grid item xs={12} sm={12}>
-          <FormControl
-            fullWidth
-            margin="normal"
-            error={Boolean(
-              formik.touched.reparticion && formik.errors.reparticion
-            )}
-          >
-            <InputLabel id="reparticion-label">Repartición</InputLabel>
-            <Select
-              labelId="reparticion-label"
-              name="reparticion"
-              value={formik.values.reparticion || ""}
-              onChange={(e) =>
-                formik.setFieldValue("reparticion", e.target.value)
-              }
-            >
-              {Array.isArray(reparticiones) &&
-                reparticiones.map((rep) => (
-                  <MenuItem key={rep.idReparticion} value={rep.idReparticion}>
-                    {rep.Reparticion}
-                  </MenuItem>
-                ))}
-            </Select>
-            {formik.touched.reparticion && formik.errors.reparticion && (
-              <FormHelperText>{formik.errors.reparticion}</FormHelperText>
-            )}
-          </FormControl>
-        </Grid>
+        
 
-        {/* Cargo */}
-        <Grid item xs={12} sm={12}>
-          <FormControl
-            fullWidth
-            margin="normal"
-            error={Boolean(formik.touched.cargo && formik.errors.cargo)}
-          >
-            <InputLabel id="cargo-label">Cargo</InputLabel>
-            <Select
-              labelId="cargo-label"
-              name="cargo"
-              value={formik.values.cargo || ""}
-              onChange={(e) => formik.setFieldValue("cargo", e.target.value)}
-            >
-              {Array.isArray(cargos) &&
-                cargos.map((rep) => (
-                  <MenuItem key={rep.idcargo} value={rep.idcargo}>
-                    {rep.cargo}
-                  </MenuItem>
-                ))}
-            </Select>
-            {formik.touched.cargo && formik.errors.cargo && (
-              <FormHelperText>{formik.errors.cargo}</FormHelperText>
-            )}
-          </FormControl>
-        </Grid>
-
-        {/* aplicativo */}
-        <Grid item xs={12} sm={12}>
-          <FormControl
-            fullWidth
-            margin="normal"
-            error={Boolean(
-              formik.touched.aplicativo && formik.errors.aplicativo
-            )}
-          >
-            <InputLabel id="aplicativo-label">Repartición</InputLabel>
-            <Select
-              labelId="aplicativo-label"
-              name="aplicativo"
-              value={formik.values.aplicativo || ""}
-              onChange={(e) =>
-                formik.setFieldValue("aplicativo", e.target.value)
-              }
-            >
-              {Array.isArray(aplicativos) &&
-                aplicativos.map((rep) => (
-                  <MenuItem key={rep.idAplicativo} value={rep.idAplicativo}>
-                    {rep.Aplicativo}
-                  </MenuItem>
-                ))}
-            </Select>
-            {formik.touched.aplicativo && formik.errors.aplicativo && (
-              <FormHelperText>{formik.errors.aplicativo}</FormHelperText>
-            )}
-          </FormControl>
-        </Grid>
+        
 
         {/* Botón principal */}
         <Grid item xs={12} md={6}>

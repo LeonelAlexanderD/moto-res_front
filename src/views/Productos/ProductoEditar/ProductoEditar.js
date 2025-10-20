@@ -13,7 +13,7 @@ import {
 import ProductoForm from "../ProductoForm/ProductoForm";
 import CustomModal from "components/customModal/CustomModal";
 import { Tooltip } from "@mui/material";
-import { ProductoContext } from "../ProductoPage/ProductosPage";
+import { ProductoContext } from "../Common/ProductoProvider";
 
 export default function ProductoEditar({ item }) {
 

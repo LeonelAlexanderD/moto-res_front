@@ -27,11 +27,11 @@ const errorMessage = {
   ],
 };
 
-export const getProductos = createAsyncThunk();
+export const getProductos = createAsyncThunk('productos/getProductos', async () => []);
+export const getProductosSearch = createAsyncThunk('productos/getProductosSearch', async () => []);
+export const getProductoByID = createAsyncThunk('productos/getProductoByID', async () => []);
 
-export const getProductosSearch = createAsyncThunk();
-
-export const getProductoByID = createAsyncThunk();
+export const clearData = createAction('productos/clearData');
 
 export const productosSlice = createSlice({
   name: 'productos',
@@ -92,14 +92,22 @@ export const productosSlice = createSlice({
           ? errorMessage
           : action?.error?.message;
       })
-      ;
+
+      .addCase(clearData, (state)=>{
+        state.productosFilter = [];
+        state.errorFilter = null;
+        state.response = null;
+      });
     }
   });
 
 export const selectProductos = (state) => state.productos.productos;
 export const selectProductosSearch = (state) => state.productos.productosFilter;
 export const selectProductoByID = (state) => state.productos.productoById;
-export const selectIsLoading = (state) => state.roles.loading;
-export const selectError = (state) => state.roles.error;
+export const selectIsLoading = (state) => state.productos.loading;
+export const selectError = (state) => state.productos.error;
+export const selectMessageResponse = (state) => state.productos.messageResponse;
+export const selectNumberPages = (state) => state.productos.numberPages;
+
 
 export default productosSlice.reducer;

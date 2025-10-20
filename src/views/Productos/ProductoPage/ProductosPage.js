@@ -15,13 +15,13 @@ import {} from '../ProductoEditar/ProductoEditar';
 import {
   getProductosSearch, // funcion en slice
   selectProductosSearch, //state de la funcion filterUsuario
-  selectIsLoading,
-  selectMessageResponse, // estate en slice
-  selectError,// state en slice
-  selectUsuarioById,
+  selectMessageResponse, 
+  selectError,
+  getProductoByID,
+  selectProductoById,
   selectNumberPages,
 
-} from 'store/usuarios/usuarios.slice';
+} from 'store/productos/productos.slice';
 import { ProductoContext } from "../Common/ProductoProvider";
 
 export const ProductosContext = React.createContext(1);

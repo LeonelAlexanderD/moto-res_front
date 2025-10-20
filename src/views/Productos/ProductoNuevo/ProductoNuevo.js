@@ -5,16 +5,13 @@ import Button from "@mui/material/Button";
 import DialogContent from "@mui/material/DialogContent";
 import ProductoForm from "../ProductoForm/ProductoForm";
 import CustomModal from "components/customModal/CustomModal";
-import { UsuariosContext } from "../ProductoPage/ProductosPage";
-import { searchPerson, filterPersonas } from "store/persona/persona.slice";
-
-import { asignarUsuarioAplicativo } from "store/aplicativos/aplicativos.slice";
+import { ProductoContext } from "../Common/ProductoProvider";
 import { GetUsuariosEndpoint, createNewUsuario, selectMessageResponse } from "store/usuarios/usuarios.slice";
 
 export default function ProductoNuevo() {
   const selecUsuarioResponse = useSelector(selectMessageResponse);
   const [open, setOpen] = React.useState(false);
-  const pageAndSearch = useContext(UsuariosContext);
+  const pageAndSearch = useContext(ProductoContext);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -35,13 +32,8 @@ export default function ProductoNuevo() {
 const handleSubmitAct = async (formData) => {
   const { aplicativosSeleccionados, ...usuarioData } = formData;
 
-  //añadir la logica para el cruce de datos para con la tabla persona con el documento, entonces crear el usuario con el idpersona si existese
-  try{
-    const persona = dispatch(filterPersonas(usuarioData.Documento));
-    if(persona){
-      
-    }
-  }catch{}
+ 
+  
   //
   try {
     const resultAction = await dispatch(createNewUsuario(usuarioData));
@@ -56,7 +48,6 @@ const handleSubmitAct = async (formData) => {
       idAplicativo: aplicativosSeleccionados
     };
 
-    await dispatch(asignarUsuarioAplicativo(asignacionData));
 
     console.log(`Usuario ${newUserId} creado y aplicaciones asignadas con éxito.`);
   } catch (error) {
