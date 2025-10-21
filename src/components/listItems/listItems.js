@@ -26,7 +26,7 @@ export const secondListItems = ({ rolName }) => (
     <React.Fragment>
       <StyledListSubheader component="div">
         <InventoryIcon style={iconStyles} />        
-        <ListItemLink to="productos" text="Inventario"/>
+        <ListItemLink to="/productos" text="Inventario"/>
       </StyledListSubheader>
     </React.Fragment>
 );
@@ -35,7 +35,7 @@ export const firstListItems = ({ rolName }) => (
     <React.Fragment>
       <StyledListSubheader component="div">
         <DashboardIcon style={iconStyles} />
-        <ListItemLink to="dashboard" text="Dashboard" />
+        <ListItemLink to="/dashboard" text="Dashboard" />
       </StyledListSubheader>
     </React.Fragment>
 );
@@ -44,7 +44,7 @@ export const thirdListItems = ({ rolName }) => (
     <React.Fragment>
       <StyledListSubheader component="div">
       <PointOfSaleIcon style={iconStyles} />      
-        <ListItemLink to="ventas" text="Ventas" />
+        <ListItemLink to="/ventas" text="Ventas" />
       </StyledListSubheader>      
     </React.Fragment>
 );
@@ -53,7 +53,7 @@ export const fourthListItems = ({ rolName }) => (
     <React.Fragment>
       <StyledListSubheader component="div">
          <AssessmentIcon style={iconStyles} />   
-        <ListItemLink to="reportes" text="Reportes" />
+        <ListItemLink to="/reportes" text="Reportes" />
       </StyledListSubheader>      
     </React.Fragment>
 );

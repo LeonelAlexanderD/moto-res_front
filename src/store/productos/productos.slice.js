@@ -67,7 +67,7 @@ export const productosSlice = createSlice({
       .addCase(getProductosSearch.fulfilled, (state, action) => {
         state.loading = false;
         state.productosFilter = action.payload || [];
-        state.numberPages = action.payload.data.pages;
+        // state.numberPages = action.payload.data.pages;
       })
       .addCase(getProductosSearch.rejected, (state, action) => {
         state.loading = false;
@@ -103,7 +103,7 @@ export const productosSlice = createSlice({
       .addCase(getProductoLowStock.fulfilled, (state, action) => {
         state.loading = false;
         state.productosFilter = action.payload || [];
-        state.numberPages = action.payload.data.pages;
+        // state.numberPages = action.payload.data.pages;
       })
       .addCase(getProductoLowStock.rejected, (state, action) => {
         state.loading = false;

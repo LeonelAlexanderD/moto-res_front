@@ -106,6 +106,7 @@ function DashboardContent({ rolName }) {
           <Toolbar
             sx={{
               pr: "24px",
+              margin: "12px",
             }}
           >
             <IconButton
@@ -147,8 +148,10 @@ function DashboardContent({ rolName }) {
               alignItems: "center",
               justifyContent: "flex-end",
               px: [1],
+              mt:11,
             }}
-            style={{ margin: "12px 0px" }}
+            // style={{ margin: "20px 0px" }} //espaciado en el menubar
+            
           >
             <IconButton onClick={toggleDrawer}>
               <ChevronLeftIcon />
@@ -202,7 +205,7 @@ function DashboardContent({ rolName }) {
           <Container
             maxWidth={false}
             sx={{
-              mt: 12,
+              mt: 18, //variar segun el tamaño del menu superior
               display: "flex",
               flexDirection: "column",
             }}

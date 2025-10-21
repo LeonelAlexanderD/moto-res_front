@@ -2,7 +2,7 @@
 // import { useDispatch, useSelector } from "react-redux";
 import { HashRouter, Routes, Route, Navigate } from "react-router-dom";
 // import SignInSide from "views/Login/SignInSide";
-import Dashboard from "./components/Dashboard/Dashboard";
+import Dashboard from "./components/dashboard/Dashboard";
 // import { SnackBarMessageResponse } from "utils/Response/SnackBarMessageResponse";
 // import SnackBarUtils from "utils/MUI/SnackbarUtils";
 import { ToastContainer } from "react-toastify";
@@ -10,8 +10,9 @@ import "react-toastify/dist/ReactToastify.css";
 
 import ProductoPage from "./views/Productos/ProductoPage/ProductosPage";
 import MainPage from "views/Principal/MainPage/MainPage";
+// import ReportesPage from "views/informes/InformeMain";
+import ReportesPage from "views/Reports/ReportesPage";
 import { ProductoProvider } from "./views/Productos/Common/ProductoProvider";
-
 
 export default function App() {
   const isAuthenticated = localStorage.getItem("token");
@@ -35,8 +36,6 @@ export default function App() {
         <Routes>
           {/* {isAuthenticated = true ( */}
           <Route path="*" element={<Dashboard logout={isAuthenticated} />}>
-            
-
             <Route
               path="dashboard"
               element={
@@ -53,22 +52,15 @@ export default function App() {
                 </ProductoProvider>
               }
             />
-            {/* <Route
-              path="roles"
+            <Route
+              path="reportes"
               element={
-                <UsuarioProvider>
-                  <RolesPage />
-                </UsuarioProvider>
+                <ProductoProvider>
+                  <ReportesPage />
+                </ProductoProvider>
               }
-            /> */}
-            {/* <Route
-              path="permisos"
-              element={
-                <UsuarioProvider>
-                  <PermisosPage />
-                </UsuarioProvider>
-              }
-            /> */}
+            />
+          
           </Route>
           {/* ) : (
             <>
