@@ -23,14 +23,8 @@ import {
   filterUsuarios,
   selectUsuariosFilter,
 } from "store/usuarios/usuarios.slice";
-import {
-  asignarUsuarioRoles,
-  quitarUsuarioRoles,
-  getRelacionesUsuarioRoles,
-  selectRelUsuariosRoles,
-  getRolesEndPoint,
-  selectRoles,
-} from "store/roles/roles.slice";
+
+import { getProductoLowStock, selectProductosSearch } from "store/productos/productos.slice";
 
 import ProductosTable from "views/Productos/ProductoTable/ProductosTable";
 
@@ -40,44 +34,19 @@ const MainPage = () => {
   const dispatch = useDispatch();
 
 
-  const roles = useSelector(selectRoles);
+  const productos = useSelector(selectProductosSearch);
   const usuarios = useSelector(selectUsuariosFilter);
-  const relaciones = useSelector(selectRelUsuariosRoles);
 
-  const [searchRoles, setSearchRoles] = useState("");
+  const [searchProducto, setSearchProductos] = useState("");
   const [searchUser, setSearchUser] = useState("");
 
-  const [selectedRoles, setSelectedRol] = useState(null);
-  const [selectedUser, setSelectedUser] = useState(null);
 
   useEffect(() => {
-    dispatch(getRolesEndPoint());
+    dispatch(getProductoLowStock());
     dispatch(filterUsuarios({ search: "" }));
-    dispatch(getRelacionesUsuarioRoles());
   }, [dispatch]);
 
-  const handleAsignar = () => {
-    if (selectedRoles && selectedUser) {
-      const relacion = relaciones.find(
-        (r) => r.idRoles === selectedRoles && r.idUsuario === selectedUser
-      );
-
-      if (relacion) {
-        if (relacion.deshabilitado === 1) {
-          dispatch(asignarUsuarioRoles({ id: relacion.id }));
-        } else {
-          dispatch(quitarUsuarioRoles({ id: relacion.id }));
-        }
-      } else {
-        dispatch(
-          asignarUsuarioRoles({
-            idRol: selectedRoles,
-            idUsuario: selectedUser,
-          })
-        );
-      }
-    }
-  };
+  
 
   return (
     <Grid container spacing={3}>
@@ -101,10 +70,10 @@ const MainPage = () => {
                   fullWidth
                   size="small"
                   placeholder="Buscar por nombre..."
-                  value={searchRoles}
+                  value={searchProducto}
                   // validationSchema: vsUsuario
                   
-                  onChange={(e) => setSearchRoles(e.target.value)}
+                  onChange={(e) => setSearchProductos(e.target.value)}
                 />
               </Grid>
               

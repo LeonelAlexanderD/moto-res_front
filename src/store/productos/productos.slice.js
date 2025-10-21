@@ -30,6 +30,7 @@ const errorMessage = {
 export const getProductos = createAsyncThunk('productos/getProductos', async () => []);
 export const getProductosSearch = createAsyncThunk('productos/getProductosSearch', async () => []);
 export const getProductoByID = createAsyncThunk('productos/getProductoByID', async () => []);
+export const getProductoLowStock = createAsyncThunk('productos/getProductoLowStock', async () => []);
 
 export const clearData = createAction('productos/clearData');
 
@@ -87,6 +88,24 @@ export const productosSlice = createSlice({
         state.numberPages = action.payload.data.pages;
       })
       .addCase(getProductoByID.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error?.stack
+          ? errorMessage
+          : action?.error?.message;
+      })
+
+      .addCase(getProductoLowStock.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+        state.productosFilter = [];
+        state.numberPages = [];
+      })
+      .addCase(getProductoLowStock.fulfilled, (state, action) => {
+        state.loading = false;
+        state.productosFilter = action.payload || [];
+        state.numberPages = action.payload.data.pages;
+      })
+      .addCase(getProductoLowStock.rejected, (state, action) => {
         state.loading = false;
         state.error = action.error?.stack
           ? errorMessage
