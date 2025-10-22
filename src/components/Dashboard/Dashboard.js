@@ -150,7 +150,7 @@ function DashboardContent({ rolName }) {
               px: [1],
               mt:11,
             }}
-            // style={{ margin: "20px 0px" }} //espaciado en el menubar
+            // style={{ margin: "40px 0px" }} //espaciado en el menubar
             
           >
             <IconButton onClick={toggleDrawer}>

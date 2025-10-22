@@ -140,6 +140,7 @@ export default function MiniDrawer({ rolName }) {
             aria-label="open drawer"
             onClick={handleDrawerOpen}
             sx={[{ marginRight: "36px" }, open && { display: "none" }]}
+            // style={{ margin: "440px 0px" }} //espaciado en el menubar
           >
             <MenuIcon />
           </IconButton>
@@ -174,161 +175,54 @@ export default function MiniDrawer({ rolName }) {
           </IconButton>
         </DrawerHeader>
         <Divider />
-        {/* <List>
-          {["Inbox", "Starred", "Send email", "Drafts"].map((text, index) => (
-            <ListItem key={text} disablePadding sx={{ display: "block" }}>
-              <ListItemButton
-                sx={[
-                  {
-                    minHeight: 48,
-                    px: 2.5,
-                  },
-                  open
-                    ? {
-                        justifyContent: "initial",
-                      }
-                    : {
-                        justifyContent: "center",
-                      },
-                ]}
-              >
-                <ListItemIcon
-                  sx={[
-                    {
-                      minWidth: 0,
-                      justifyContent: "center",
-                    },
-                    open
-                      ? {
-                          mr: 3,
-                        }
-                      : {
-                          mr: "auto",
-                        },
-                  ]}
-                >
-                  {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-                </ListItemIcon>
-                <ListItemText
-                  primary={text}
-                  sx={[
-                    open
-                      ? {
-                          opacity: 1,
-                        }
-                      : {
-                          opacity: 0,
-                        },
-                  ]}
-                />
-              </ListItemButton>
-            </ListItem>
-          ))}
-        </List> */}
+
         <Box
+          sx={{
+            height: "calc(100vh - 64px)",
+            overflowY: "auto",
+          }}
+        >
+          <List
+            component="nav"
             sx={{
-              height: "calc(100vh - 64px)",
-              overflowY: "auto",
+              "& .MuiListItemButton-root": {
+                py: 2, // aumenta altura
+                px: 3,
+              },
+              "& .MuiListItemIcon-root": {
+                minWidth: 40,
+              },
+              "& .MuiSvgIcon-root": {
+                fontSize: 30,
+              },
+              "& .MuiListItemText-primary": {
+                fontSize: "1.3rem",
+                fontWeight: 500,
+              },
             }}
           >
-            <List
-              component="nav"
-              sx={{
-                "& .MuiListItemButton-root": {
-                  py: 2, // aumenta altura
-                  px: 3,
-                },
-                "& .MuiListItemIcon-root": {
-                  minWidth: 40,
-                },
-                "& .MuiSvgIcon-root": {
-                  fontSize: 30,
-                },
-                "& .MuiListItemText-primary": {
-                  fontSize: "1.3rem",
-                  fontWeight: 500,
-                },
-              }}
-            >
-              {firstListItems({ rolName })}
-              {secondListItems({ rolName })}
-              {thirdListItems({ rolName })}
-              {fourthListItems({ rolName })}
-            </List>
-          </Box>
+            {firstListItems({ rolName })}
+            {secondListItems({ rolName })}
+            {thirdListItems({ rolName })}
+            {fourthListItems({ rolName })}
+          </List>
+        </Box>
         <Divider />
-        <List>
-          {["All mail", "Trash", "Spam"].map((text, index) => (
-            <ListItem key={text} disablePadding sx={{ display: "block" }}>
-              <ListItemButton
-                sx={[
-                  {
-                    minHeight: 48,
-                    px: 2.5,
-                  },
-                  open
-                    ? {
-                        justifyContent: "initial",
-                      }
-                    : {
-                        justifyContent: "center",
-                      },
-                ]}
-              >
-                <ListItemIcon
-                  sx={[
-                    {
-                      minWidth: 0,
-                      justifyContent: "center",
-                    },
-                    open
-                      ? {
-                          mr: 3,
-                        }
-                      : {
-                          mr: "auto",
-                        },
-                  ]}
-                >
-                  {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-                </ListItemIcon>
-                <ListItemText
-                  primary={text}
-                  sx={[
-                    open
-                      ? {
-                          opacity: 1,
-                        }
-                      : {
-                          opacity: 0,
-                        },
-                  ]}
-                />
-              </ListItemButton>
-            </ListItem>
-          ))}
-        </List>
       </Drawer>
 
       <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
         {/* <DrawerHeader /> */}
-        {/* <Typography sx={{ marginBottom: 2 }}>
-          Lorem ipsum dolo
-        </Typography>
-        <Typography sx={{ marginBottom: 2 }}>
-          Consequat mauris nunc congue nisi vitae suscipit. Fringilla est
-          ullamcorper eget nul
-        </Typography> */}
+
         <Container
-            maxWidth={false}
-            sx={{
-              mt: 18, //variar segun el tamaño del menu superior
-              display: "flex",
-              flexDirection: "column",
-            }}
-          >
-            <Outlet />
-          </Container>
+          maxWidth={false}
+          sx={{
+            mt: 14, //variar segun el tamaño del menu superior
+            display: "flex",
+            flexDirection: "column",
+          }}
+        >
+          <Outlet />
+        </Container>
       </Box>
     </Box>
   );
