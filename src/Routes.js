@@ -2,17 +2,19 @@
 // import { useDispatch, useSelector } from "react-redux";
 import { HashRouter, Routes, Route, Navigate } from "react-router-dom";
 // import SignInSide from "views/Login/SignInSide";
-import Dashboard from "./components/dashboard/Dashboard";
+import { Dashboard } from "./components/dashboard/Dashboard";
 // import { SnackBarMessageResponse } from "utils/Response/SnackBarMessageResponse";
 // import SnackBarUtils from "utils/MUI/SnackbarUtils";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 import ProductoPage from "./views/Productos/ProductoPage/ProductosPage";
-import MainPage from "views/Principal/MainPage/MainPage";
+// import MainPage from "views/Principal/MainPage/MainPage";
+import DashboardPage from "views/Principal/MainPage";
 // import ReportesPage from "views/informes/InformeMain";
 import ReportesPage from "views/Reports/ReportesPage";
 import { ProductoProvider } from "./views/Productos/Common/ProductoProvider";
+import MiniDrawer from "components/dashboard/dash";
 
 export default function App() {
   const isAuthenticated = localStorage.getItem("token");
@@ -35,12 +37,21 @@ export default function App() {
       <HashRouter>
         <Routes>
           {/* {isAuthenticated = true ( */}
-          <Route path="*" element={<Dashboard logout={isAuthenticated} />}>
+          <Route path="*" element={<MiniDrawer logout={isAuthenticated} />}>
+            <Route
+              index
+              element={
+                <ProductoProvider>
+                  <DashboardPage />
+                  {/* o InboxPage, o lo que quieras como inicio */}
+                </ProductoProvider>
+              }
+            />
             <Route
               path="dashboard"
               element={
                 <ProductoProvider>
-                  <MainPage />
+                  <DashboardPage />
                 </ProductoProvider>
               }
             />
@@ -60,7 +71,6 @@ export default function App() {
                 </ProductoProvider>
               }
             />
-          
           </Route>
           {/* ) : (
             <>

@@ -175,7 +175,7 @@ function DashboardContent({ rolName }) {
                   minWidth: 40,
                 },
                 "& .MuiSvgIcon-root": {
-                  fontSize: 36,
+                  fontSize: 30,
                 },
                 "& .MuiListItemText-primary": {
                   fontSize: "1.3rem",
