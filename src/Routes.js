@@ -16,6 +16,7 @@ import DashboardPage from "views/Principal/MainPage";
 import ReportesPage from "views/Reports/ReportesPage";
 import { ProductoProvider } from "./views/Productos/Common/ProductoProvider";
 import MiniDrawer from "components/dashboard/dash";
+import SalesManagement from "views/Ventas/SalesPage";
 
 export default function App() {
   const isAuthenticated = localStorage.getItem("token");
@@ -38,7 +39,7 @@ export default function App() {
       <HashRouter>
         <Routes>
           {/* {isAuthenticated = true ( */}
-          <Route path="*" element={<Dashboard logout={isAuthenticated} />}>
+          <Route path="*" element={<MiniDrawer logout={isAuthenticated} />}>
             <Route
               index
               element={
@@ -69,6 +70,14 @@ export default function App() {
               element={
                 <ProductoProvider>
                   <ReportesPage />
+                </ProductoProvider>
+              }
+            />
+            <Route
+              path="ventas"
+              element={
+                <ProductoProvider>
+                  <SalesManagement />
                 </ProductoProvider>
               }
             />

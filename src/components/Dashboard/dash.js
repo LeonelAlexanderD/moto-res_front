@@ -12,17 +12,10 @@ import IconButton from "@mui/material/IconButton";
 import MenuIcon from "@mui/icons-material/Menu";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
-import ListItem from "@mui/material/ListItem";
-import ListItemButton from "@mui/material/ListItemButton";
-import ListItemIcon from "@mui/material/ListItemIcon";
-import ListItemText from "@mui/material/ListItemText";
-import InboxIcon from "@mui/icons-material/MoveToInbox";
-import MailIcon from "@mui/icons-material/Mail";
 import { Button, Container, Grid } from "@mui/material";
 import DirectionsRunIcon from "@mui/icons-material/DirectionsRun";
-import logo from "./helicoptero (1).png";
+import logo from "./helicoptero (3).png";
 import { Outlet } from "react-router-dom";
-
 import {
   firstListItems,
   secondListItems,
@@ -91,6 +84,9 @@ const AppBar = styled(MuiAppBar, {
     },
   ],
 }));
+// const AppBar = styled(MuiAppBar)(({ theme }) => ({
+//   zIndex: theme.zIndex.drawer + 1,
+// }));
 
 const Drawer = styled(MuiDrawer, {
   shouldForwardProp: (prop) => prop !== "open",
@@ -121,6 +117,13 @@ export default function MiniDrawer({ rolName }) {
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
 
+  const listaItems = [
+    firstListItems({ rolName, open }),
+    secondListItems({ rolName, open }),
+    thirdListItems({ rolName, open }),
+    fourthListItems({ rolName, open }),
+  ];
+
   const handleDrawerOpen = () => {
     setOpen(true);
   };
@@ -133,10 +136,12 @@ export default function MiniDrawer({ rolName }) {
     <Box sx={{ display: "flex" }}>
       <CssBaseline />
       <AppBar position="fixed" open={open}>
-        <Toolbar sx={{
-              pr: "24px",
-              margin: "12px",
-            }}>
+        <Toolbar
+          sx={{
+            pr: "24px",
+            margin: "12px",
+          }}
+        >
           <IconButton
             edge="start"
             color="inherit"
@@ -167,7 +172,18 @@ export default function MiniDrawer({ rolName }) {
           </Button>
         </Toolbar>
       </AppBar>
-      <Drawer variant="permanent" open={open}>
+      <Drawer
+        variant="permanent"
+        open={open}
+        
+        //     sx={{
+        //   '& .MuiDrawer-paper': {
+        //     top: '120px', //  hace que el drawer arranque debajo del AppBar
+        //     height: 'calc(100% - 120px)', // para que ocupe el resto de la pantalla
+        //   },
+        // }}
+      >
+        <DrawerHeader />
         <DrawerHeader>
           <IconButton onClick={handleDrawerClose}>
             {theme.direction === "rtl" ? (
@@ -177,39 +193,96 @@ export default function MiniDrawer({ rolName }) {
             )}
           </IconButton>
         </DrawerHeader>
+
         <Divider />
 
-        <Box
+        {/* <Box
           sx={{
             height: "calc(100vh - 64px)",
             overflowY: "auto",
           }}
+        > */}
+        <List
+          sx={{ ml: open? 3 :0 }}
+
+
+
+          // component="nav"
+          // sx={{
+          //   "& .MuiListItemButton-root": {
+          //     py: 2, // aumenta altura
+          //     px: 3,
+          //   },
+          //   "& .MuiListItemIcon-root": {
+          //     minWidth: 40,
+          //   },
+          //   "& .MuiSvgIcon-root": {
+          //     fontSize: 30,
+          //   },
+          //   "& .MuiListItemText-primary": {
+          //     fontSize: "1.3rem",
+          //     fontWeight: 500,
+          //   },
+          // }}
         >
-          <List
-            component="nav"
-            sx={{
-              "& .MuiListItemButton-root": {
-                py: 2, // aumenta altura
-                px: 3,
-              },
-              "& .MuiListItemIcon-root": {
-                minWidth: 40,
-              },
-              "& .MuiSvgIcon-root": {
-                fontSize: 30,
-              },
-              "& .MuiListItemText-primary": {
-                fontSize: "1.3rem",
-                fontWeight: 500,
-              },
-            }}
-          >
-            {firstListItems({ rolName })}
+        {listaItems.map((item, index) => (
+            <Box key={index}>{React.cloneElement(item, { rolName, open })}</Box>
+          ))}
+          {/* {firstListItems({ rolName })}
             {secondListItems({ rolName })}
             {thirdListItems({ rolName })}
-            {fourthListItems({ rolName })}
-          </List>
-        </Box>
+            {fourthListItems({ rolName })} */}
+          {/* {listaItems.map((text, index) => (
+            <ListItem key={text} disablePadding sx={{ display: "block" }}>
+              <ListItemButton
+                sx={[
+                  {
+                    minHeight: 48,
+                    px: 2.5,
+                  },
+                  open
+                    ? {
+                        justifyContent: "initial",
+                      }
+                    : {
+                        justifyContent: "center",
+                      },
+                ]}
+              >
+                <ListItemIcon
+                  sx={[
+                    {
+                      minWidth: 0,
+                      justifyContent: "center",
+                    },
+                    open
+                      ? {
+                          mr: 3,
+                        }
+                      : {
+                          mr: "auto",
+                        },
+                  ]}
+                >
+                </ListItemIcon>
+                <ListItemText
+                  primary={text}
+                  sx={[
+                    open
+                      ? {
+                          opacity: 1,
+                        }
+                      : {
+                          opacity: 0,
+                        },
+                  ]}
+                />
+              </ListItemButton>
+            </ListItem>
+          ))} */}
+          
+        </List>
+        {/* </Box> */}
         <Divider />
       </Drawer>
 
