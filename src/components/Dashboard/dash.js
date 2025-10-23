@@ -133,7 +133,10 @@ export default function MiniDrawer({ rolName }) {
     <Box sx={{ display: "flex" }}>
       <CssBaseline />
       <AppBar position="fixed" open={open}>
-        <Toolbar>
+        <Toolbar sx={{
+              pr: "24px",
+              margin: "12px",
+            }}>
           <IconButton
             edge="start"
             color="inherit"

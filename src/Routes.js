@@ -2,11 +2,12 @@
 // import { useDispatch, useSelector } from "react-redux";
 import { HashRouter, Routes, Route, Navigate } from "react-router-dom";
 // import SignInSide from "views/Login/SignInSide";
-import { Dashboard } from "./components/dashboard/Dashboard";
+import Dashboard from "./components/dashboard/Dashboard";
 // import { SnackBarMessageResponse } from "utils/Response/SnackBarMessageResponse";
 // import SnackBarUtils from "utils/MUI/SnackbarUtils";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import {DashboardContent} from 'components/dashboard/Dashboard';
 
 import ProductoPage from "./views/Productos/ProductoPage/ProductosPage";
 // import MainPage from "views/Principal/MainPage/MainPage";
@@ -37,7 +38,7 @@ export default function App() {
       <HashRouter>
         <Routes>
           {/* {isAuthenticated = true ( */}
-          <Route path="*" element={<MiniDrawer logout={isAuthenticated} />}>
+          <Route path="*" element={<Dashboard logout={isAuthenticated} />}>
             <Route
               index
               element={
