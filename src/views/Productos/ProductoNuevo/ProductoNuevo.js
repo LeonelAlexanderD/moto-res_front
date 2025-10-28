@@ -6,7 +6,7 @@ import DialogContent from "@mui/material/DialogContent";
 import ProductoForm from "../ProductoForm/ProductoForm";
 import CustomModal from "components/customModal/CustomModal";
 import { ProductoContext } from "../Common/ProductoProvider";
-import { GetUsuariosEndpoint, createNewUsuario, selectMessageResponse } from "store/usuarios/usuarios.slice";
+import { getProductos, getProductosSearch, getProductoByID, getProductoLowStock, selectProductos, selectProductosSearch, selectProductoByID, createProduct, editProduct, removeProduct, selectMessageResponse } from "store/productos/productos.slice";
 
 export default function ProductoNuevo() {
   const selecUsuarioResponse = useSelector(selectMessageResponse);
@@ -17,7 +17,7 @@ export default function ProductoNuevo() {
   useEffect(() => {
     if (selecUsuarioResponse?.data?.success) {
       setOpen(false);
-      dispatch(GetUsuariosEndpoint(pageAndSearch));
+      dispatch(getProductos(pageAndSearch));
     }
   }, [dispatch, selecUsuarioResponse]);
   const handleClickOpen = () => {
@@ -29,31 +29,31 @@ export default function ProductoNuevo() {
   };
 
 
-const handleSubmitAct = async (formData) => {
-  const { aplicativosSeleccionados, ...usuarioData } = formData;
+  const handleSubmitAct = async (formData) => {
+    const { aplicativosSeleccionados, ...usuarioData } = formData;
 
- 
-  
-  //
-  try {
-    const resultAction = await dispatch(createNewUsuario(usuarioData));
-    const newUserId = resultAction.payload.idUsuario;
 
-    if (!newUserId) {
-      throw new Error("No se pudo obtener el ID del usuario creado.");
+
+    //
+    try {
+      const resultAction = await dispatch(createProduct(usuarioData));
+      const newUserId = resultAction.payload.idUsuario;
+
+      if (!newUserId) {
+        throw new Error("No se pudo obtener el ID del usuario creado.");
+      }
+
+      const asignacionData = {
+        idUsuario: newUserId,
+        idAplicativo: aplicativosSeleccionados
+      };
+
+
+      console.log(`Usuario ${newUserId} creado y aplicaciones asignadas con éxito.`);
+    } catch (error) {
+      console.error("Error al crear usuario o asignar aplicaciones:", error);
     }
-
-    const asignacionData = {
-      idUsuario: newUserId,
-      idAplicativo: aplicativosSeleccionados
-    };
-
-
-    console.log(`Usuario ${newUserId} creado y aplicaciones asignadas con éxito.`);
-  } catch (error) {
-    console.error("Error al crear usuario o asignar aplicaciones:", error);
-  }
-};
+  };
 
   return (
     <React.Fragment>

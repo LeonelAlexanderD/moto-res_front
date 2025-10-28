@@ -31,12 +31,11 @@ const ProductosPage = () => {
   const [view, setView] = useState(false);
   const [currentSearch, setCurrentSearch] = React.useState(null);
   const dispatch = useDispatch();
-  const GetUsuarios = useSelector(selectProductosSearch);
+  const productoSearch = useSelector(selectProductosSearch);
   const GetResponse = useSelector(selectMessageResponse);
-  const numberPages = useSelector(selectNumberPages);
+  // const numberPages = useSelector(selectNumberPages);
   const sError = useSelector(selectError);
   let [page, setPage] = useState(1);
-  // const [usuario, setUsuario] = useContext(UsuarioContext);
 
   useEffect(() => {
     dispatch(getProductosSearch({ page: page ? page : 1, data: currentSearch }));
@@ -49,21 +48,27 @@ const ProductosPage = () => {
     }
   }, [GetResponse, sError]);
 
-  const handleChange = (event, values) => {
-    setPage(values);
-  };
+  // const handleChange = (event, values) => {
+  //   setPage(values);
+  // };
+
+  // const handleSearch = (e) => {
+  //   if (e.code !== "Enter") return;
+  //   dispatch(getProductosSearch({ page: 1, data: e.target.value }));
+  //   setCurrentSearch(e.target.value);
+  // };
 
   const handleSearch = (e) => {
     if (e.code !== "Enter") return;
-    dispatch(getProductosSearch({ page: 1, data: e.target.value }));
+    dispatch(getProductosSearch({data: e.target.value}));
     setCurrentSearch(e.target.value);
-  };
+  }
 
   return (
     <ProductoContext.Provider value={{ page, data: currentSearch }}>
       <React.Fragment>
         <div style={{ display: "flex", alignItems: "left" }}>
-          <h1 style={{ margin: "10px 0" }}>Usuarios</h1>
+          <h1 style={{ margin: "10px 0" }}>Respuestos</h1>
         </div>
         <Grid container spacing={2}>
           <Grid item xs={4}>
@@ -73,17 +78,17 @@ const ProductosPage = () => {
             <GenericSearch handleSearch={handleSearch} />
           </Grid>
         </Grid>
-        <ProductosTable datosAct={GetUsuarios} />
+        <ProductosTable datosAct={productosSearch} />
 
 
-        <Stack spacing={2} style={{ margin: "20px 0px 30px 0px" }}>
+        {/* <Stack spacing={2} style={{ margin: "20px 0px 30px 0px" }}>
           <Pagination
             count={numberPages && numberPages}
             page={page}
             onChange={handleChange}
             color="primary"
           />
-        </Stack>
+        </Stack> */}
       </React.Fragment>
     </ProductoContext.Provider>
   );

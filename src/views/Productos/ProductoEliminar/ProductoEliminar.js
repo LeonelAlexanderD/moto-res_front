@@ -10,14 +10,12 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogActions from "@mui/material/DialogActions";
 
-import {
-  GetUsuariosEndpoint,
-  removeUsuario,
-} from "store/usuarios/usuarios.slice";
+
 import { Tooltip } from "@mui/material";
 import { ProductoContext } from "../Common/ProductoProvider";
+import { getProductos, removeProduct} from "store/productos/productos.slice";
 
-export default function ProductoEliminar({ itemAct }) {
+export default function ProductoEliminar({ data }) {
   const [open, setOpen] = React.useState(false);
   const dispatch = useDispatch();
   const pageAndSearch = useContext(ProductoContext);
@@ -32,11 +30,11 @@ export default function ProductoEliminar({ itemAct }) {
 
   const handleSubmit = () => {
     setOpen(false);
-    dispatch(removeUsuario(itemAct.idUsuario));
+    dispatch(removeProduct(data.id));
 
     setTimeout(() => {
-      // dispatch(GetUsuariosEndPoint(page ? page : 1));
-      dispatch(GetUsuariosEndpoint(pageAndSearch));
+      // dispatch(getProductos(page ? page : 1));
+      dispatch(getProductos(pageAndSearch));
     }, 400);
   };
 
@@ -50,18 +48,17 @@ export default function ProductoEliminar({ itemAct }) {
         </span>
       </Tooltip>
       <Dialog open={open}>
-        <DialogTitle> Eliminar Usuario </DialogTitle>
+        <DialogTitle> Eliminar Producto </DialogTitle>
         <DialogContent>
           <DialogContentText>
-            Estás seguro que deseas eliminar el usuario{" "}
-            <b> "{itemAct.descripcion}" </b>?
+            Estás seguro que deseas eliminar el producto{" "}
+            <b> "{data.nombre} - {data.descripcion}" </b>?
           </DialogContentText>
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose}> Cancelar </Button>
-          <Button onClick={handleSubmit} autoFocus>
-            {" "}
-            Aceptar{" "}
+          <Button onClick={handleSubmit} autoFocus>            
+            Aceptar
           </Button>
         </DialogActions>
       </Dialog>

@@ -22,6 +22,7 @@ import {
 } from "store/usuarios/usuarios.slice";
 import { useFormControl } from '@mui/material/FormControl';
 import { vsUsuario } from "../Common/YupUsuarios";
+import { getProductos, getProductosSearch, getProductoByID, getProductoLowStock, selectProductos, selectProductosSearch, selectProductoByID, createProduct, editProduct, removeProduct, selectMessageResponse } from "store/productos/productos.slice";
 
 const ProductoForm = ({ data, onSubmit, onClose }) => {
   const dispatch = useDispatch();
@@ -34,10 +35,15 @@ const ProductoForm = ({ data, onSubmit, onClose }) => {
 
   const formik = useFormik({
     initialValues: {
-      documento: data?.documento || "",
-      Nombre: data?.Nombre || "",
-      Usuario: data?.Usuario || "",
-      password: data?.password || ""
+      codigo: data?.codigo || "",
+      nombre: data?.nombre || "",
+      descripcion: data?.descripcion || "",
+      modelo: data?.modelo || "",
+      marca: data?.marca || "",
+      stock: data?.stock || "",
+      precio_unitario: data?.precio_unitario || "",
+      categoria: data?.categoria || "",
+      subcategoria: data?.subcategoria || "",
 
     },
 
@@ -46,37 +52,36 @@ const ProductoForm = ({ data, onSubmit, onClose }) => {
     onSubmit: (values) => onSubmit(values),
   });
 
-  const handleBuscarDocumento = async () => {
-    const { documento } = formik.values;
+  // manejar que se hace si existe ya un producto con este codigo
+  const handleBuscarProductoCodigo = async () => {
+    const { producto } = formik.values;
+    if(formik.values.codigo)
+      dispatch(getProductoByID({search: formik.values.codigo}))
 
   };
 
-  const handleBuscarUsuario = () => {
-    const { usuario } = formik.values;
-    if (formik.values.usuario)
-      dispatch(filterUsuarios({ search: formik.values.usuario }));
-  };
+  
 
   return (
     <form onSubmit={formik.handleSubmit}>
       <Grid container spacing={2}>
-        {/* Documento */}
+        {/* Codigo */}
         <Grid item xs={12} sm={8}>
-          <InputLabel>Documento</InputLabel>
+          <InputLabel>Codigo</InputLabel>
           <div style={{ display: "flex", gap: "8px" }}>
             <TextField
               fullWidth
-              name="documento"
-              value={formik.values.documento}
+              name="codigo"
+              value={formik.values.codigo}
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
               error={
-                formik.touched.documento && Boolean(formik.errors.documento)
+                formik.touched.codigo && Boolean(formik.errors.codigo)
               }
-              helperText={formik.touched.documento && formik.errors.documento}
+              helperText={formik.touched.codigo && formik.errors.codigo}
             />
             {!isEditMode && (
-              <IconButton color="primary" onClick={handleBuscarDocumento}>
+              <IconButton color="primary" onClick={handleBuscarProductoCodigo}>
                 <SearchOutlined />
               </IconButton>
             )}
@@ -88,64 +93,114 @@ const ProductoForm = ({ data, onSubmit, onClose }) => {
           <InputLabel>Nombre</InputLabel>
           <TextField
             fullWidth
-            name="Nombre"
-            value={formik.values.Nombre}
+            name="nombre"
+            value={formik.values.nombre}
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
-            error={formik.touched.Nombre && Boolean(formik.errors.Nombre)}
-            helperText={formik.touched.Nombre && formik.errors.Nombre}
+            error={formik.touched.nombre && Boolean(formik.errors.nombre)}
+            helperText={formik.touched.nombre && formik.errors.nombre}
           />
         </Grid>
 
-        {/* Usuario */}
+        {/* Descripcion */}
         <Grid item xs={12} sm={6}>
-          <InputLabel>Usuario</InputLabel>
+          <InputLabel>Descripcion</InputLabel>
           <div style={{ display: "flex", gap: "8px" }}>
             <TextField
               fullWidth
-              name="Usuario"
-              value={formik.values.Usuario}
+              name="descripcion"
+              value={formik.values.descripcion}
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
-              error={formik.touched.Usuario && Boolean(formik.errors.Usuario)}
-              helperText={formik.touched.Usuario && formik.errors.Usuario}
+              error={formik.touched.descripcion && Boolean(formik.errors.descripcion)}
+              helperText={formik.touched.descripcion && formik.errors.descripcion}
             />
-            {!isEditMode && (
-              <IconButton color="primary" onClick={handleBuscarUsuario}>
-                <SearchOutlined />
-              </IconButton>
-            )}
           </div>
         </Grid>
 
-        {/* Contraseña */}
+        {/* Modelo */}
         <Grid item xs={12} sm={6}>
-          <InputLabel>Contraseña</InputLabel>
+          <InputLabel>Modelo</InputLabel>
           <TextField
             fullWidth
-            name="password"
-            value={formik.values.password}
+            name="modelo"
+            value={formik.values.modelo}
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
             error={
-              formik.touched.password && Boolean(formik.errors.password)
+              formik.touched.modelo && Boolean(formik.errors.modelo)
             }
-            helperText={formik.touched.password && formik.errors.password}
+            helperText={formik.touched.modelo && formik.errors.modelo}
             
           />          
         </Grid>
 
-        {/* Email */}
+        {/* Marca */}
         <Grid item xs={12} sm={12}>
-          <InputLabel>Email</InputLabel>
+          <InputLabel>Marca</InputLabel>
           <TextField
             fullWidth
-            name="email"
-            value={formik.values.email}
+            name="marca"
+            value={formik.values.marca}
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
-            error={formik.touched.email && Boolean(formik.errors.email)}
-            helperText={formik.touched.email && formik.errors.email}
+            error={formik.touched.marca && Boolean(formik.errors.marca)}
+            helperText={formik.touched.marca && formik.errors.marca}
+          />
+        </Grid>
+        {/* Stock */}
+        <Grid item xs={12} sm={12}>
+          <InputLabel>Stock</InputLabel>
+          <TextField
+            fullWidth
+            name="stock"
+            value={formik.values.stock}
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+            error={formik.touched.stock && Boolean(formik.errors.stock)}
+            helperText={formik.touched.stock && formik.errors.stock}
+          />
+        </Grid>
+
+        {/* Precio Unitario */}
+        <Grid item xs={12} sm={12}>
+          <InputLabel>Precio Unitario</InputLabel>
+          <TextField
+            fullWidth
+            name="precio_unitario"
+            value={formik.values.precio_unitario}
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+            error={formik.touched.precio_unitario && Boolean(formik.errors.precio_unitario)}
+            helperText={formik.touched.precio_unitario && formik.errors.precio_unitario}
+          />
+        </Grid>
+
+        {/* Categoria */}
+        <Grid item xs={12} sm={12}>
+          <InputLabel>Categoria</InputLabel>
+          <TextField
+            fullWidth
+            name="categoria"
+            value={formik.values.categoria}
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+            error={formik.touched.categoria && Boolean(formik.errors.categoria)}
+            helperText={formik.touched.categoria && formik.errors.categoria}
+          />
+        </Grid>
+
+        {/* Subcategoria */}
+        <Grid item xs={12} sm={12}>
+          <InputLabel>Subcategoria</InputLabel>
+          <TextField
+            fullWidth
+            name="subcategoria"
+            value={formik.values.subcategoria}
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+            error={formik.touched.subcategoria && Boolean(formik.errors.subcategoria)}
+            helperText={formik.touched.subcategoria && formik.errors.subcategoria}
           />
         </Grid>
 

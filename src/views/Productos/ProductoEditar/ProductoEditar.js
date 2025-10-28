@@ -4,30 +4,25 @@ import { useDispatch, useSelector } from "react-redux";
 import IconButton from "@mui/material/IconButton";
 import EditIcon from "@mui/icons-material/Edit";
 import DialogContent from "@mui/material/DialogContent";
-
-import {
-  GetUsuariosEndpoint,
-  editUsuario,
-  selectMessageResponse,
-} from "store/usuarios/usuarios.slice";
 import ProductoForm from "../ProductoForm/ProductoForm";
 import CustomModal from "components/customModal/CustomModal";
 import { Tooltip } from "@mui/material";
 import { ProductoContext } from "../Common/ProductoProvider";
+import { getProductos, editProduct, selectMessageResponse } from "store/productos/productos.slice";
 
 export default function ProductoEditar({ item }) {
 
   const [open, setOpen] = React.useState(false);
   const pageAndSearch = useContext(ProductoContext);
   const dispatch = useDispatch();
-  const sUsuarioResponse = useSelector(selectMessageResponse);
+  const sProductoResponse = useSelector(selectMessageResponse);
 
   useEffect(() => {
-    if (sUsuarioResponse?.data?.success) {
+    if (sProductoResponse?.data?.success) {
       setOpen(false);
-      dispatch(GetUsuariosEndpoint(pageAndSearch));
+      dispatch(getProductos(pageAndSearch));
     }
-  }, [dispatch, sUsuarioResponse]);
+  }, [dispatch, sProductoResponse]);
 
   
 
@@ -40,7 +35,7 @@ export default function ProductoEditar({ item }) {
   };
 
   const handleSubmit = (data) => {
-    dispatch(editUsuario({ data }));
+    dispatch(editProduct({ data }));
   };
 
   return (
@@ -53,7 +48,7 @@ export default function ProductoEditar({ item }) {
         </span>
       </Tooltip>{" "}
       <CustomModal
-        title={"Editar Usuario"}
+        title={"Editar Producto"}
         open={open}
         setOpen={handleClose}
         maxWidth="sm"

@@ -17,7 +17,7 @@ import ProductoEliminar from "../ProductoEliminar/ProductoEliminar";
 import ProductoEditar from "../ProductoEditar/ProductoEditar";
 import ProductoInfo from "../ProductoDetalle/ProductoInfo";
 
-const renderCantCap = (data) => (
+const renderCantCap = (prod) => (
   <div style={{ display: "flex", alignItems: "center" }}>    
   </div>
 );
@@ -44,7 +44,7 @@ const renderCupoCell = (cupo) => (
   </TableCell>
 );
 
-const ProductosTable = ({ datosAct }) => {
+const ProductosTable = ({ productos, }) => {
 
 
   return (
@@ -54,13 +54,13 @@ const ProductosTable = ({ datosAct }) => {
           <TableRow>
             {[
               "ID",
-              "Apellido y Nombre",
-              "DNI",
-              "Correo electrónico",
-              "Repartición",
-              "Roles/Permisos",
-              "Estado",
-              "Fecha de creación",
+              "Nombre",
+              "Descripcion",
+              "Stock Actual",
+              "Precio Unitario",
+              "Precio Promocional",
+              "Inicio Promocion",
+              "Fin Promocion",
               "Acciones",
             ].map((header, index) => (
               <TableCell key={index} sx={{ ...tableHeadCell }}>
@@ -70,23 +70,22 @@ const ProductosTable = ({ datosAct }) => {
           </TableRow>
         </TableHead>
         <TableBody>
-          {(datosAct && datosAct)?.map(
-            (data) => (
-              <TableRow key={data.idUsuario}>
-                {renderTableCell(data.idUsuario)}
-                {renderTableCell(data.Nombre, "200px")}
-                {renderTableCell(data.dni)}
-                {renderTableCell(data.email)}
-                {renderTableCell(data.idReparticion)}
-                {renderDoubleTableCell(data.idRol, data.idPermiso)}
-                {renderTableCell(data.Activo)}
-                {renderCupoCell(data.fechaCreacion)}
-                {renderTableCell(data.fechaModificacion)}
+          {(productos && productos)?.map(
+            (prod) => (
+              <TableRow key={prod.id}>
+                {renderTableCell(prod.id)}
+                {renderTableCell(prod.nombre, "200px")}
+                {renderTableCell(prod.descripcion)}
+                {renderTableCell(prod.stock_actual)}
+                {renderTableCell(prod.precio_unitario)}
+                {renderTableCell(prod.precio_promocion)}
+                {renderTableCell(prod.fecha_inicio)}
+                {renderCupoCell(prod.fecha_fin)}
                 {renderTableCell(
                                   <>
-                                    <ProductoEditar item={data} />
-                                    <ProductoEliminar data={data} />
-                                    <ProductoInfo itemView={data} />
+                                    <ProductoEditar item={prod} />
+                                    <ProductoEliminar data={prod} />
+                                    <ProductoInfo itemView={prod} />
                                   </>,
                                   "120px",
                                   "center"

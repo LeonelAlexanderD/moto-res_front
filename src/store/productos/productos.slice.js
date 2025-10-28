@@ -31,6 +31,9 @@ export const getProductos = createAsyncThunk('productos/getProductos', async () 
 export const getProductosSearch = createAsyncThunk('productos/getProductosSearch', async () => []);
 export const getProductoByID = createAsyncThunk('productos/getProductoByID', async () => []);
 export const getProductoLowStock = createAsyncThunk('productos/getProductoLowStock', async () => []);
+export const createProduct = createAsyncThunk('productos/createProducto', async () => []);
+export const editProduct = createAsyncThunk('productos/createProducto', async () => []);
+export const removeProduct = createAsyncThunk('productos/createProducto', async () => []);
 
 export const clearData = createAction('productos/clearData');
 
@@ -112,6 +115,57 @@ export const productosSlice = createSlice({
           : action?.error?.message;
       })
 
+      .addCase(createProduct.pending, (state) => {
+        state.loading = true;
+        state.creating = true;
+        state.error = null;
+      })
+      .addCase(createProduct.fulfilled, (state, action) => {
+        state.loading = false;
+        state.creating = action.payload || [];
+      })
+      .addCase(createProduct.rejected, (state, action) => {
+        state.loading = false;
+        state.creating = false;
+        state.error = action.error?.stack
+          ? errorMessage
+          : action?.error?.message;
+      })
+
+      .addCase(editProduct.pending, (state) => {
+        state.loading = true;
+        state.editing = true;
+        state.error = null;
+      })
+      .addCase(editProduct.fulfilled, (state, action) => {
+        state.loading = false;
+        state.editing = action.payload || [];
+      })
+      .addCase(editProduct.rejected, (state, action) => {
+        state.loading = false;
+        state.editing = false;
+        state.error = action.error?.stack
+          ? errorMessage
+          : action?.error?.message;
+      })
+
+      .addCase(removeProduct.pending, (state) => {
+        state.loading = true;
+        state.deleting = true;
+        state.error = null;
+      })
+      .addCase(removeProduct.fulfilled, (state, action) => {
+        state.loading = false;
+        state.deleting = action.payload || [];
+      })
+      .addCase(removeProduct.rejected, (state, action) => {
+        state.loading = false;
+        state.deleting = false;
+        state.error = action.error?.stack
+          ? errorMessage
+          : action?.error?.message;
+      })
+
       .addCase(clearData, (state)=>{
         state.productosFilter = [];
         state.errorFilter = null;
@@ -127,6 +181,10 @@ export const selectIsLoading = (state) => state.productos.loading;
 export const selectError = (state) => state.productos.error;
 export const selectMessageResponse = (state) => state.productos.messageResponse;
 export const selectNumberPages = (state) => state.productos.numberPages;
+
+export const isCreating = (state) => state.isCreating;
+export const isEditing = (state) => state.editing;
+export const isDeleting = (state) => state.deleting;
 
 
 export default productosSlice.reducer;

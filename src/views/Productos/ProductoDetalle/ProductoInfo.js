@@ -21,7 +21,7 @@ import DialogContent from '@mui/material/DialogContent';
 
 
 
-export default function ProductoInfo({ itemAct }) {
+export default function ProductoInfo({ itemView }) {
 
   const [open, setOpen] = React.useState(false);
   const theme = useTheme();
@@ -60,87 +60,120 @@ export default function ProductoInfo({ itemAct }) {
         <Grid item xs={12} md={6}>
           <FormControl fullWidth>
             <Typography variant="subtitle1" color="text.secondary">
-              ID Usuario
+              ID Producto
             </Typography>
             <Typography variant="h6" gutterBottom>
-              {itemAct?.idUsuario}
+              {itemAct?.id}
             </Typography>
           </FormControl>
         </Grid>
         <Grid item xs={12} md={12}>
           <FormControl fullWidth>
             <Typography variant="subtitle1" color="text.secondary">
-              Apellido y Nombre
+              Codigo
             </Typography>
             <Typography variant="h6" gutterBottom>
-              {itemAct?.Nombre ?? " - "}
+              {itemAct?.codigo ?? " - "}
             </Typography>
           </FormControl>
         </Grid>
         <Grid item xs={12} md={6}>
           <FormControl fullWidth>
             <Typography variant="subtitle1" color="text.secondary">
-              DNI
+              Nombre
             </Typography>
             <Typography variant="h6" gutterBottom>
-              {itemAct?.documento ?? " - "}
+              {itemAct?.nombre ?? " - "}
             </Typography>
           </FormControl>
         </Grid>
         <Grid item xs={12} md={6}>
           <FormControl fullWidth>
             <Typography variant="subtitle1" color="text.secondary">
-              Reparticion
+              Descripcion
             </Typography>
             <Typography variant="h6" gutterBottom>
-              {itemAct?.idReparticion} - {itemAct?.Reparticion}
+              {itemAct?.descripcion}
             </Typography>
           </FormControl>
         </Grid>
         <Grid item xs={12} md={6}>
           <FormControl fullWidth>
             <Typography variant="subtitle1" color="text.secondary">
-              Correo Electronico
+              Modelo
             </Typography>
             <Typography variant="h6" gutterBottom>
-              {itemAct?.email ?? " - "}
+              {itemAct?.modelo ?? " - "}
             </Typography>
           </FormControl>
         </Grid>
         <Grid item xs={12} md={6}>
           <FormControl fullWidth>
             <Typography variant="subtitle1" color="text.secondary">
-              Usuario
+              Marca
             </Typography>
             <Typography variant="h6" gutterBottom>
-              {itemAct?.Usuario ?? " - "}
-            </Typography>
-          </FormControl>
-        </Grid>
-        <Grid item xs={12} md={12}>
-
-          <Grid item xs={12} md={12}>
-
-          </Grid>
-
-        </Grid>
-        <Grid item xs={12} md={6}>
-          <FormControl fullWidth>
-            <Typography variant="subtitle1" color="text.secondary">
-              Estado
-            </Typography>
-            <Typography variant="h6" gutterBottom>
-              {itemAct?.Activo ?? " - "}
+              {itemAct?.marca_id ?? " - "}
             </Typography>
           </FormControl>
         </Grid>
         <Grid item xs={12} md={6}>
           <FormControl fullWidth>
             <Typography variant="subtitle1" color="text.secondary">
-              Fecha de Alta
+              Stock Actual
             </Typography>
             <Typography variant="h6" gutterBottom>
-              {formatDDMMYY_HMS(itemAct?.fechaCreacion) ?? " - "}
+              {itemAct?.stock_actual ?? " - "}
+            </Typography>
+          </FormControl>
+        </Grid>
+        <Grid item xs={12} md={6}>
+          <FormControl fullWidth>
+            <Typography variant="subtitle1" color="text.secondary">
+              Stock Maximo
+            </Typography>
+            <Typography variant="h6" gutterBottom>
+              {itemAct?.stock_maximo ?? " - "}
+            </Typography>
+          </FormControl>
+        </Grid>
+        <Grid item xs={12} md={6}>
+          <FormControl fullWidth>
+            <Typography variant="subtitle1" color="text.secondary">
+              Precio Unitario
+            </Typography>
+            <Typography variant="h6" gutterBottom>
+              {itemAct?.precio_unitario?? " - "}
+            </Typography>
+          </FormControl>
+        </Grid>        
+        <Grid item xs={12} md={6}>
+          <FormControl fullWidth>
+            <Typography variant="subtitle1" color="text.secondary">
+              Categoria
+            </Typography>
+            <Typography variant="h6" gutterBottom>
+              {itemAct?.categoria_id?? " - "}
+            </Typography>
+          </FormControl>
+        </Grid>        
+        <Grid item xs={12} md={6}>
+          <FormControl fullWidth>
+            <Typography variant="subtitle1" color="text.secondary">
+              Sub-Categoria
+            </Typography>
+            <Typography variant="h6" gutterBottom>
+              {itemAct?.subcategoria_id?? " - "}
+            </Typography>
+          </FormControl>
+        </Grid>        
+        <Grid item xs={12} md={6}>
+          <FormControl fullWidth>
+            <Typography variant="subtitle1" color="text.secondary">
+              Precio Promocional
+            </Typography>
+            <Typography variant="h6" gutterBottom>
+              {itemAct?.precio_unitario?? " - "}
             </Typography>
           </FormControl>
         </Grid>        
