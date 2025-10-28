@@ -32,8 +32,8 @@ export const getProductosSearch = createAsyncThunk('productos/getProductosSearch
 export const getProductoByID = createAsyncThunk('productos/getProductoByID', async () => []);
 export const getProductoLowStock = createAsyncThunk('productos/getProductoLowStock', async () => []);
 export const createProduct = createAsyncThunk('productos/createProducto', async () => []);
-export const editProduct = createAsyncThunk('productos/createProducto', async () => []);
-export const removeProduct = createAsyncThunk('productos/createProducto', async () => []);
+export const editProduct = createAsyncThunk('productos/editProduct', async () => []);
+export const removeProduct = createAsyncThunk('productos/removeProduct', async () => []);
 
 export const clearData = createAction('productos/clearData');
 
@@ -116,16 +116,14 @@ export const productosSlice = createSlice({
       })
 
       .addCase(createProduct.pending, (state) => {
-        state.loading = true;
         state.creating = true;
         state.error = null;
       })
       .addCase(createProduct.fulfilled, (state, action) => {
-        state.loading = false;
-        state.creating = action.payload || [];
+        state.creating = true;
+        state.productoById = action.payload || [];
       })
       .addCase(createProduct.rejected, (state, action) => {
-        state.loading = false;
         state.creating = false;
         state.error = action.error?.stack
           ? errorMessage

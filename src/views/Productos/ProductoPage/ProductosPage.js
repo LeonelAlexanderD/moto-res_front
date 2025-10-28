@@ -78,7 +78,7 @@ const ProductosPage = () => {
             <GenericSearch handleSearch={handleSearch} />
           </Grid>
         </Grid>
-        <ProductosTable datosAct={productosSearch} />
+        <ProductosTable datosAct={handleSearch} />
 
 
         {/* <Stack spacing={2} style={{ margin: "20px 0px 30px 0px" }}>

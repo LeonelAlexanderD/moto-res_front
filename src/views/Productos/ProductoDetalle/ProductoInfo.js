@@ -63,7 +63,7 @@ export default function ProductoInfo({ itemView }) {
               ID Producto
             </Typography>
             <Typography variant="h6" gutterBottom>
-              {itemAct?.id}
+              {itemView?.id}
             </Typography>
           </FormControl>
         </Grid>
@@ -73,7 +73,7 @@ export default function ProductoInfo({ itemView }) {
               Codigo
             </Typography>
             <Typography variant="h6" gutterBottom>
-              {itemAct?.codigo ?? " - "}
+              {itemView?.codigo ?? " - "}
             </Typography>
           </FormControl>
         </Grid>
@@ -83,7 +83,7 @@ export default function ProductoInfo({ itemView }) {
               Nombre
             </Typography>
             <Typography variant="h6" gutterBottom>
-              {itemAct?.nombre ?? " - "}
+              {itemView?.nombre ?? " - "}
             </Typography>
           </FormControl>
         </Grid>
@@ -93,7 +93,7 @@ export default function ProductoInfo({ itemView }) {
               Descripcion
             </Typography>
             <Typography variant="h6" gutterBottom>
-              {itemAct?.descripcion}
+              {itemView?.descripcion}
             </Typography>
           </FormControl>
         </Grid>
@@ -103,7 +103,7 @@ export default function ProductoInfo({ itemView }) {
               Modelo
             </Typography>
             <Typography variant="h6" gutterBottom>
-              {itemAct?.modelo ?? " - "}
+              {itemView?.modelo ?? " - "}
             </Typography>
           </FormControl>
         </Grid>
@@ -113,7 +113,7 @@ export default function ProductoInfo({ itemView }) {
               Marca
             </Typography>
             <Typography variant="h6" gutterBottom>
-              {itemAct?.marca_id ?? " - "}
+              {itemView?.marca_id ?? " - "}
             </Typography>
           </FormControl>
         </Grid>
@@ -123,7 +123,7 @@ export default function ProductoInfo({ itemView }) {
               Stock Actual
             </Typography>
             <Typography variant="h6" gutterBottom>
-              {itemAct?.stock_actual ?? " - "}
+              {itemView?.stock_actual ?? " - "}
             </Typography>
           </FormControl>
         </Grid>
@@ -133,7 +133,7 @@ export default function ProductoInfo({ itemView }) {
               Stock Maximo
             </Typography>
             <Typography variant="h6" gutterBottom>
-              {itemAct?.stock_maximo ?? " - "}
+              {itemView?.stock_maximo ?? " - "}
             </Typography>
           </FormControl>
         </Grid>
@@ -143,7 +143,7 @@ export default function ProductoInfo({ itemView }) {
               Precio Unitario
             </Typography>
             <Typography variant="h6" gutterBottom>
-              {itemAct?.precio_unitario?? " - "}
+              {itemView?.precio_unitario?? " - "}
             </Typography>
           </FormControl>
         </Grid>        
@@ -153,7 +153,7 @@ export default function ProductoInfo({ itemView }) {
               Categoria
             </Typography>
             <Typography variant="h6" gutterBottom>
-              {itemAct?.categoria_id?? " - "}
+              {itemView?.categoria_id?? " - "}
             </Typography>
           </FormControl>
         </Grid>        
@@ -163,7 +163,7 @@ export default function ProductoInfo({ itemView }) {
               Sub-Categoria
             </Typography>
             <Typography variant="h6" gutterBottom>
-              {itemAct?.subcategoria_id?? " - "}
+              {itemView?.subcategoria_id?? " - "}
             </Typography>
           </FormControl>
         </Grid>        
@@ -173,7 +173,7 @@ export default function ProductoInfo({ itemView }) {
               Precio Promocional
             </Typography>
             <Typography variant="h6" gutterBottom>
-              {itemAct?.precio_unitario?? " - "}
+              {itemView?.precio_unitario?? " - "}
             </Typography>
           </FormControl>
         </Grid>        

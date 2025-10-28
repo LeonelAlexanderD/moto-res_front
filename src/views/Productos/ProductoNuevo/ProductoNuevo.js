@@ -29,30 +29,7 @@ export default function ProductoNuevo() {
   };
 
 
-  const handleSubmitAct = async (formData) => {
-    const { aplicativosSeleccionados, ...usuarioData } = formData;
-
-
-
-    //
-    try {
-      const resultAction = await dispatch(createProduct(usuarioData));
-      const newUserId = resultAction.payload.idUsuario;
-
-      if (!newUserId) {
-        throw new Error("No se pudo obtener el ID del usuario creado.");
-      }
-
-      const asignacionData = {
-        idUsuario: newUserId,
-        idAplicativo: aplicativosSeleccionados
-      };
-
-
-      console.log(`Usuario ${newUserId} creado y aplicaciones asignadas con éxito.`);
-    } catch (error) {
-      console.error("Error al crear usuario o asignar aplicaciones:", error);
-    }
+  const handleSubmitAct = async (formData) => {    
   };
 
   return (

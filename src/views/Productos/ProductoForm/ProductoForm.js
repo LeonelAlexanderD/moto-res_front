@@ -1,9 +1,10 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useFormik } from "formik";
 import { toast } from "react-toastify";
 import * as Yup from "yup";
 import {
+  Autocomplete,
   TextField,
   Button,
   Grid,
@@ -20,15 +21,39 @@ import {
   filterUsuarios,
   clearUsuariosSearchData,
 } from "store/usuarios/usuarios.slice";
-import { useFormControl } from '@mui/material/FormControl';
-import { vsUsuario } from "../Common/YupUsuarios";
-import { getProductos, getProductosSearch, getProductoByID, getProductoLowStock, selectProductos, selectProductosSearch, selectProductoByID, createProduct, editProduct, removeProduct, selectMessageResponse } from "store/productos/productos.slice";
+import { useFormControl } from "@mui/material/FormControl";
+import { vsProd } from "../Common/YupProducto";
+import {
+  getProductoByID,
+  createProduct,
+  editProduct,
+  selectMessageResponse,
+} from "store/productos/productos.slice";
+import {
+  getCategorias,
+  createCategoria,
+} from "store/categorias/categorias.slice";
+import {
+  getSubCategorias,
+  createSubCategoria,
+} from "store/categorias/subcategorias.slice";
+import { getMarcas, createMarca } from "store/marcas/marcas.slice";
 
 const ProductoForm = ({ data, onSubmit, onClose }) => {
+  const [marcas, setMarcas] = useState([]);
+  const [categorias, setCategorias] = useState([]);
+  const [subcategorias, setSubcategorias] = useState([]);
   const dispatch = useDispatch();
   const isEditMode = Boolean(data);
-  
 
+  useEffect(() => {
+    // Cargar opciones iniciales
+    getMarcas().then(setMarcas);
+    getCategorias().then(setCategorias);
+    if (data?.categoria_id) {
+      getSubCategorias(data.categoria_id).then(setSubcategorias);
+    }
+  }, [data]);
   const handleClose = (event, reason) => {
     onClose();
   };
@@ -44,23 +69,44 @@ const ProductoForm = ({ data, onSubmit, onClose }) => {
       precio_unitario: data?.precio_unitario || "",
       categoria: data?.categoria || "",
       subcategoria: data?.subcategoria || "",
-
     },
 
     enableReinitialize: true,
-    validationSchema: vsUsuario,
-    onSubmit: (values) => onSubmit(values),
+    validationSchema: vsProd,
+    onSubmit: async (values) => {
+      let marcaId = marcas.find((m) => m.nombre === values.marca)?.id;
+      let categoriaId = categorias.find(
+        (c) => c.nombre === values.categoria
+      )?.id;
+      let subcategoriaId = subcategorias.find(
+        (s) => s.nombre === values.subcategoria
+      )?.id;
+
+      if (!marcaId) marcaId = (await createMarca(values.marca)).id;
+      if (!categoriaId)
+        categoriaId = (await createCategoria(values.categoria)).id;
+      if (!subcategoriaId)
+        subcategoriaId = (
+          await createSubCategoria(values.subcategoria, categoriaId)
+        ).id;
+
+      await createProduct({
+        ...values,
+        marca_id: marcaId,
+        categoria_id: categoriaId,
+        subcategoria_id: subcategoriaId,
+      });
+
+      onSave?.();
+    },
   });
 
   // manejar que se hace si existe ya un producto con este codigo
   const handleBuscarProductoCodigo = async () => {
     const { producto } = formik.values;
-    if(formik.values.codigo)
-      dispatch(getProductoByID({search: formik.values.codigo}))
-
+    if (formik.values.codigo)
+      dispatch(getProductoByID({ search: formik.values.codigo }));
   };
-
-  
 
   return (
     <form onSubmit={formik.handleSubmit}>
@@ -75,9 +121,7 @@ const ProductoForm = ({ data, onSubmit, onClose }) => {
               value={formik.values.codigo}
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
-              error={
-                formik.touched.codigo && Boolean(formik.errors.codigo)
-              }
+              error={formik.touched.codigo && Boolean(formik.errors.codigo)}
               helperText={formik.touched.codigo && formik.errors.codigo}
             />
             {!isEditMode && (
@@ -112,8 +156,12 @@ const ProductoForm = ({ data, onSubmit, onClose }) => {
               value={formik.values.descripcion}
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
-              error={formik.touched.descripcion && Boolean(formik.errors.descripcion)}
-              helperText={formik.touched.descripcion && formik.errors.descripcion}
+              error={
+                formik.touched.descripcion && Boolean(formik.errors.descripcion)
+              }
+              helperText={
+                formik.touched.descripcion && formik.errors.descripcion
+              }
             />
           </div>
         </Grid>
@@ -127,27 +175,24 @@ const ProductoForm = ({ data, onSubmit, onClose }) => {
             value={formik.values.modelo}
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
-            error={
-              formik.touched.modelo && Boolean(formik.errors.modelo)
-            }
+            error={formik.touched.modelo && Boolean(formik.errors.modelo)}
             helperText={formik.touched.modelo && formik.errors.modelo}
-            
-          />          
+          />
         </Grid>
 
         {/* Marca */}
-        <Grid item xs={12} sm={12}>
-          <InputLabel>Marca</InputLabel>
-          <TextField
-            fullWidth
-            name="marca"
+        <Grid item xs={12} sm={6}>
+          <Autocomplete
+            freeSolo
+            options={marcas.map((m) => m.nombre)}
             value={formik.values.marca}
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-            error={formik.touched.marca && Boolean(formik.errors.marca)}
-            helperText={formik.touched.marca && formik.errors.marca}
+            onChange={(e, val) => formik.setFieldValue("marca", val || "")}
+            renderInput={(params) => (
+              <TextField {...params} label="Marca" fullWidth />
+            )}
           />
         </Grid>
+
         {/* Stock */}
         <Grid item xs={12} sm={12}>
           <InputLabel>Stock</InputLabel>
@@ -171,42 +216,48 @@ const ProductoForm = ({ data, onSubmit, onClose }) => {
             value={formik.values.precio_unitario}
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
-            error={formik.touched.precio_unitario && Boolean(formik.errors.precio_unitario)}
-            helperText={formik.touched.precio_unitario && formik.errors.precio_unitario}
+            error={
+              formik.touched.precio_unitario &&
+              Boolean(formik.errors.precio_unitario)
+            }
+            helperText={
+              formik.touched.precio_unitario && formik.errors.precio_unitario
+            }
           />
         </Grid>
 
-        {/* Categoria */}
-        <Grid item xs={12} sm={12}>
-          <InputLabel>Categoria</InputLabel>
-          <TextField
-            fullWidth
-            name="categoria"
+        {/* Categoría */}
+        <Grid item xs={12} sm={6}>
+          <Autocomplete
+            freeSolo
+            options={categorias.map((c) => c.nombre)}
             value={formik.values.categoria}
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-            error={formik.touched.categoria && Boolean(formik.errors.categoria)}
-            helperText={formik.touched.categoria && formik.errors.categoria}
+            onChange={(e, val) => {
+              formik.setFieldValue("categoria", val || "");
+              const cat = categorias.find((x) => x.nombre === val);
+              if (cat) getSubCategorias(cat.id).then(setSubcategorias);
+              else setSubcategorias([]);
+            }}
+            renderInput={(params) => (
+              <TextField {...params} label="Categoría" fullWidth />
+            )}
           />
         </Grid>
 
-        {/* Subcategoria */}
-        <Grid item xs={12} sm={12}>
-          <InputLabel>Subcategoria</InputLabel>
-          <TextField
-            fullWidth
-            name="subcategoria"
+        {/* Subcategoría */}
+        <Grid item xs={12} sm={6}>
+          <Autocomplete
+            freeSolo
+            options={subcategorias.map((s) => s.nombre)}
             value={formik.values.subcategoria}
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-            error={formik.touched.subcategoria && Boolean(formik.errors.subcategoria)}
-            helperText={formik.touched.subcategoria && formik.errors.subcategoria}
+            onChange={(e, val) =>
+              formik.setFieldValue("subcategoria", val || "")
+            }
+            renderInput={(params) => (
+              <TextField {...params} label="Subcategoría" fullWidth />
+            )}
           />
         </Grid>
-
-        
-
-        
 
         {/* Botón principal */}
         <Grid item xs={12} md={6}>
@@ -223,7 +274,7 @@ const ProductoForm = ({ data, onSubmit, onClose }) => {
 
         <Grid item xs={12} md={6}>
           <Button type="submit" variant="contained" color="success" fullWidth>
-            {isEditMode ? "Guardar Cambios" : "Crear Usuario"}
+            {isEditMode ? "Guardar Cambios" : "Crear Producto"}
           </Button>
         </Grid>
       </Grid>
