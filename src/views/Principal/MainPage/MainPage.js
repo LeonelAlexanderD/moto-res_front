@@ -1,119 +1,55 @@
-import React, { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import {
-  Grid,
-  Card,
-  CardContent,
-  Typography,
-  TextField,
-  IconButton,
-  Checkbox,
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableRow,
-  Button,
-  Divider,
-} from "@mui/material";
-import PersonAddIcon from "@mui/icons-material/PersonAdd";
+import React from "react";
+import { Box, Typography, Button, Grid } from "@mui/material";
+import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
 import SearchIcon from "@mui/icons-material/Search";
+import AssessmentIcon from "@mui/icons-material/Assessment";
+import TodayReport from "../MainTable/ReporteMain";
+import StockCriticoTable from "../MainTable/CriticalStock";
 
-import {
-  filterUsuarios,
-  selectUsuariosFilter,
-} from "store/usuarios/usuarios.slice";
+const DashboardPage = () => {
 
-import { getProductoLowStock, selectProductosSearch } from "store/productos/productos.slice";
-
-import ProductosTable from "views/Productos/ProductoTable/ProductosTable";
-
-
-
-const MainPage = () => {
-  const dispatch = useDispatch();
-
-
-  const productos = useSelector(selectProductosSearch);
-  const usuarios = useSelector(selectUsuariosFilter);
-
-  const [searchProducto, setSearchProductos] = useState("");
-  const [searchUser, setSearchUser] = useState("");
-
-
-  useEffect(() => {
-    dispatch(getProductoLowStock());
-    dispatch(filterUsuarios({ search: "" }));
-  }, [dispatch]);
-
-  
+  // Datos simulados (podés reemplazar por tus selectores o endpoints)
+  const ventasHoy = 2450;
+  const variacion = 15;
+  const alertasStock = [
+    { repuesto: "Pastillas de Freno", stockActual: 5, puntoPedido: 10 },
+    { repuesto: "Aceite de Motor", stockActual: 2, puntoPedido: 5 },
+    { repuesto: "Bujías", stockActual: 8, puntoPedido: 15 },
+  ];
 
   return (
-    <Grid container spacing={3}>
-      <Grid item xs={12}>
-        <Typography variant="h5" sx={{ fontWeight: "bold" }}>
-          Dashboard
-        </Typography>
-      </Grid>
-      <Grid item xs={12} md={6}></Grid>
-      <Grid item xs={12} md={6}>
-        <IconButton item xs={12} md={4}>Nueva Venta</IconButton>
-      </Grid>
-      {/* Buscar Roles */}
-      <Grid item xs={12} md={4}>
-        <Card>
-          <CardContent>
-            <Typography variant="h6">Ventas Hoy</Typography>
-            <Grid container spacing={1} alignItems="center" sx={{ mb: 2 }}>
-              <Grid item xs>
-                <TextField
-                  fullWidth
-                  size="small"
-                  placeholder="Buscar por nombre..."
-                  value={searchProducto}
-                  // validationSchema: vsUsuario
-                  
-                  onChange={(e) => setSearchProductos(e.target.value)}
-                />
-              </Grid>
-              
-            </Grid>
+    <Box sx={{ p: 3 }}>
+      {/* <Typography variant="h5" fontWeight={700} gutterBottom>
+        Dashboard
+      </Typography> */}
 
-            {/* <RolesTable roles={roles?.records} /> */}
-            
-          </CardContent>
-        </Card>
+      <Box sx={{ display: "flex", justifyContent: "flex-end", gap: 2, mb: 3 }}>
+        <Button
+          variant="contained"
+          color="error"
+          startIcon={<AddShoppingCartIcon />}
+        >
+          Nueva Venta
+        </Button>
+        <Button variant="outlined" startIcon={<SearchIcon />}>
+          Consultar Repuestos
+        </Button>
+        <Button variant="outlined" startIcon={<AssessmentIcon />}>
+          Reportes
+        </Button>
+      </Box>
+
+      <Grid container spacing={6} sx={{ display: "flex", gap: 4, flexWrap: "wrap" }}>
+        <Box item sx={{ flex: "1 0 30%", minWidth: "200px" }}>
+          <TodayReport ventasHoy={ventasHoy} variacion={variacion} />
+        </Box>
+
+        <Box item sx={{ flex: "1 0 60%", minWidth: "400px" }}>
+          <StockCriticoTable alertasStock={alertasStock} />
+        </Box>
       </Grid>
-
-      {/* Buscar Usuarios */}
-      <Grid item xs={12} md={6}>
-        <Card>
-          <CardContent>
-            <Typography variant="h6">Alerta Stock Bajo</Typography>
-            <Grid container spacing={1} alignItems="center" sx={{ mb: 2 }}>
-              
-              <Grid item>
-                <IconButton
-                  onClick={() =>
-                    dispatch(filterUsuarios({ search: searchUser }))
-                  }
-                >
-                  <SearchIcon />
-                </IconButton>
-              </Grid>
-            </Grid>
-            
-            <ProductosTable usuarios={usuarios?.records} />
-
-          </CardContent>
-        </Card>
-      </Grid>
-
-     
-    </Grid>
+    </Box>
   );
 };
 
-
-
-export default MainPage;
+export default DashboardPage;

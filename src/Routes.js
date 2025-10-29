@@ -11,7 +11,7 @@ import {DashboardContent} from 'components/dashboard/Dashboard';
 
 import ProductoPage from "./views/Productos/ProductoPage/ProductosPage";
 // import MainPage from "views/Principal/MainPage/MainPage";
-import DashboardPage from "views/Principal/MainPage";
+import DashboardPage from "views/Principal/MainPage/MainPage";
 // import ReportesPage from "views/informes/InformeMain";
 import ReportesPage from "views/Reports/ReportesPage";
 import { ProductoProvider } from "./views/Productos/Common/ProductoProvider";
