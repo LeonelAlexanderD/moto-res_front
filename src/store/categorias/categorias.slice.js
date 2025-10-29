@@ -138,7 +138,7 @@ export const categoriasSlice = createSlice({
     }
   });
 
-export const selectCategoria = (state) => state.categorias.categorias;
+export const selectCategorias = (state) => state.categorias.categorias;
 export const selectCategoriaSearch = (state) => state.categorias.categoriasFilter;
 export const selectIsLoading = (state) => state.categorias.loading;
 export const selectError = (state) => state.categorias.error;

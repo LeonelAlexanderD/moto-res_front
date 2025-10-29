@@ -39,24 +39,31 @@ import {
 } from "store/categorias/subcategorias.slice";
 import { getMarcas, createMarca } from "store/marcas/marcas.slice";
 
-const ProductoForm = ({ data, onSubmit, onClose }) => {
-  const [marcas, setMarcas] = useState([]);
-  const [categorias, setCategorias] = useState([]);
-  const [subcategorias, setSubcategorias] = useState([]);
+const ProductoForm = ({
+  onSubmit,
+  onClose,
+  data,
+  marcas = [],
+  categorias = [],
+  subcategorias = [],
+}) => {
+  // const [marcas, setMarcas] = useState([]);
+  // const [categorias, setCategorias] = useState([]);
+  // const [subcategorias, setSubcategorias] = useState([]);
   const dispatch = useDispatch();
   const isEditMode = Boolean(data);
 
-  useEffect(() => {
-    // Cargar opciones iniciales
-    getMarcas().then(setMarcas);
-    getCategorias().then(setCategorias);
-    if (data?.categoria_id) {
-      getSubCategorias(data.categoria_id).then(setSubcategorias);
-    }
-  }, [data]);
-  const handleClose = (event, reason) => {
-    onClose();
-  };
+  // useEffect(() => {
+  //   // Cargar opciones iniciales
+  //   getMarcas().then(setMarcas);
+  //   getCategorias().then(setCategorias);
+  //   if (data?.categoria_id) {
+  //     getSubCategorias(data.categoria_id).then(setSubcategorias);
+  //   }
+  // }, [data]);
+  // const handleClose = (event, reason) => {
+  //   onClose();
+  // };
 
   const formik = useFormik({
     initialValues: {
@@ -73,33 +80,17 @@ const ProductoForm = ({ data, onSubmit, onClose }) => {
 
     enableReinitialize: true,
     validationSchema: vsProd,
-    onSubmit: async (values) => {
-      let marcaId = marcas.find((m) => m.nombre === values.marca)?.id;
-      let categoriaId = categorias.find(
-        (c) => c.nombre === values.categoria
-      )?.id;
-      let subcategoriaId = subcategorias.find(
-        (s) => s.nombre === values.subcategoria
-      )?.id;
-
-      if (!marcaId) marcaId = (await createMarca(values.marca)).id;
-      if (!categoriaId)
-        categoriaId = (await createCategoria(values.categoria)).id;
-      if (!subcategoriaId)
-        subcategoriaId = (
-          await createSubCategoria(values.subcategoria, categoriaId)
-        ).id;
-
-      await createProduct({
-        ...values,
-        marca_id: marcaId,
-        categoria_id: categoriaId,
-        subcategoria_id: subcategoriaId,
-      });
-
-      onSave?.();
-    },
+    onSubmit,
   });
+
+  const { values, handleChange, handleSubmit, setFieldValue, touched, errors } =
+    formik;
+
+  const subcategoriasFiltradas = subcategorias.filter(
+    (s) =>
+      s.categoria_id ===
+      categorias.find((c) => c.nombre === values.categoria)?.id
+  );
 
   // manejar que se hace si existe ya un producto con este codigo
   const handleBuscarProductoCodigo = async () => {
@@ -185,10 +176,16 @@ const ProductoForm = ({ data, onSubmit, onClose }) => {
           <Autocomplete
             freeSolo
             options={marcas.map((m) => m.nombre)}
-            value={formik.values.marca}
-            onChange={(e, val) => formik.setFieldValue("marca", val || "")}
+            value={values.marca}
+            onChange={(_, newValue) => setFieldValue("marca", newValue || "")}
             renderInput={(params) => (
-              <TextField {...params} label="Marca" fullWidth />
+              <TextField
+                {...params}
+                label="Marca"
+                name="marca"
+                error={touched.marca && Boolean(errors.marca)}
+                helperText={touched.marca && errors.marca}
+              />
             )}
           />
         </Grid>
@@ -226,35 +223,45 @@ const ProductoForm = ({ data, onSubmit, onClose }) => {
           />
         </Grid>
 
-        {/* Categoría */}
+         {/* Categoría */}
         <Grid item xs={12} sm={6}>
           <Autocomplete
             freeSolo
             options={categorias.map((c) => c.nombre)}
-            value={formik.values.categoria}
-            onChange={(e, val) => {
-              formik.setFieldValue("categoria", val || "");
-              const cat = categorias.find((x) => x.nombre === val);
-              if (cat) getSubCategorias(cat.id).then(setSubcategorias);
-              else setSubcategorias([]);
+            value={values.categoria}
+            onChange={(_, newValue) => {
+              setFieldValue("categoria", newValue || "");
+              setFieldValue("subcategoria", ""); // limpiar subcategoría si cambia categoría
             }}
             renderInput={(params) => (
-              <TextField {...params} label="Categoría" fullWidth />
+              <TextField
+                {...params}
+                label="Categoría"
+                name="categoria"
+                error={touched.categoria && Boolean(errors.categoria)}
+                helperText={touched.categoria && errors.categoria}
+              />
             )}
           />
         </Grid>
 
         {/* Subcategoría */}
-        <Grid item xs={12} sm={6}>
+        <Grid item xs={12}>
           <Autocomplete
             freeSolo
-            options={subcategorias.map((s) => s.nombre)}
-            value={formik.values.subcategoria}
-            onChange={(e, val) =>
-              formik.setFieldValue("subcategoria", val || "")
+            options={subcategoriasFiltradas.map((s) => s.nombre)}
+            value={values.subcategoria}
+            onChange={(_, newValue) =>
+              setFieldValue("subcategoria", newValue || "")
             }
             renderInput={(params) => (
-              <TextField {...params} label="Subcategoría" fullWidth />
+              <TextField
+                {...params}
+                label="Subcategoría"
+                name="subcategoria"
+                error={touched.subcategoria && Boolean(errors.subcategoria)}
+                helperText={touched.subcategoria && errors.subcategoria}
+              />
             )}
           />
         </Grid>
@@ -264,7 +271,7 @@ const ProductoForm = ({ data, onSubmit, onClose }) => {
           <Button
             variant="contained"
             color="error"
-            onClick={() => handleClose()}
+            onClick={() => onClose()}
             spacing={2}
             fullWidth
           >
